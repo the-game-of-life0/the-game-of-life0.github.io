@@ -46,7 +46,7 @@ p {
 
 .game-window {
   background: #fff;
-  width: 70%;
+  width: 60%;
   height: 60vh;
   min-height: 400px;
   margin: 20px 0;
@@ -66,4 +66,9 @@ p {
   50% {
     transform: scale(1);
   }
+}
+
+.next {
+  height: 20px;
+  width: 4px;
 }

@@ -10,14 +10,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Aldrich&family=VT323&display=swap" rel="stylesheet">
   
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
   </head>
   <body>
   
     <div class="container">
       <h1>The Game of Life</h1>
-      
       <div class="game-window">
-        <!-- EMBED GAME HERE -->
+        <canvas id="game"></canvas>
+      </div>
+      <div class="settings">
+        <canvas class="speed"></canvas>
+        <canvas class="start"></canvas>
+        <canvas class="stop"></canvas>
+        <canvas class="next"></canvas>
+        <canvas class="reset"></canvas>
       </div>
   
       <p class="rules-heading">HOW TO PLAY</p>
