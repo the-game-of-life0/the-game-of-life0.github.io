@@ -32,8 +32,7 @@ let startY = 0;
 // Replace this with your actual array lookup or procedural map generation
 function getSquareColor(i, j) {
     if (i === 0 && j === 0) return '#e74c3c'; // Visual origin marker
-    const hash = Math.abs((i * 12345 + j * 67890) % 360);
-    return `hsl(${hash}, 45%, 35%)`;
+    return '#000000'
 }
 
 // --- CORE RENDERING ENGINE (Calculates Visible Squares) ---
