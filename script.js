@@ -1,10 +1,24 @@
 // --- CONFIGURATION SETUP ---
-const canvas = document.getElementById('game'); // Change to your canvas ID
+const canvas = document.getElementById('game');
+const game_window = document.getElementsByClassName('game-window')[0]
+
+// --- CANVAS RESIZING LOGIC (Fits the container element) ---
+function resizeCanvas() {
+    canvas.width = game_window.clientWidth;
+    canvas.height = game_window.clientHeight;
+}
+
+// Listen for window resize events to recalculate container boundaries
+window.addEventListener('resize', resizeCanvas);
+
+// Call it immediately once to set initial sizes
+resizeCanvas();
+
 const ctx = canvas.getContext('2d');
 
 const BASE_SQUARE_SIZE = 70; // Width/height of square at 1.0x zoom
-const MAX_ZOOM_OUT = 0.35;   // Your strict maximum zoom-out limit
-const MAX_ZOOM_IN = 4.0;     // Maximum zoom-in limsit
+const MAX_ZOOM_OUT = 0.15;   // Your strict maximum zoom-out limit
+const MAX_ZOOM_IN = 6.0;     // Maximum zoom-in limsit
 
 // --- CAMERA VIEWPORT STATE ---
 let zoom = 1.0;
@@ -46,15 +60,6 @@ function draw() {
             // Render square background using custom array coordinates
             ctx.fillStyle = getSquareColor(i, j);
             ctx.fillRect(screenX, screenY, currentSize - 1, currentSize - 1); // -1 for border spacing
-
-            // 3. Draw coordinate text label [i, j] inside the dynamic box
-            if (zoom > 0.5) {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-                ctx.font = `${Math.max(10, currentSize * 0.18)}px monospace`;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(`${i},${j}`, screenX + currentSize / 2, screenY + currentSize / 2);
-            }
         }
     }
 
