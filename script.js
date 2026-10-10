@@ -1,6 +1,6 @@
 // --- CONFIGURATION SETUP ---
-const canvas = document.getElementById('game');
-const game_window = document.getElementsByClassName('game-window')[0]
+let canvas = document.getElementById('game');
+let game_window = document.getElementsByClassName('game-window')[0]
 
 // --- CANVAS RESIZING LOGIC (Fits the container element) ---
 function resizeCanvas() {
@@ -14,11 +14,11 @@ window.addEventListener('resize', resizeCanvas);
 // Call it immediately once to set initial sizes
 resizeCanvas();
 
-const ctx = canvas.getContext('2d');
+let ctx = canvas.getContext('2d');
 
-const BASE_SQUARE_SIZE = 70; // Width/height of square at 1.0x zoom
-const MAX_ZOOM_OUT = 0.15;   // Your strict maximum zoom-out limit
-const MAX_ZOOM_IN = 6.0;     // Maximum zoom-in limsit
+let BASE_SQUARE_SIZE = 70; // Width/height of square at 1.0x zoom
+let MAX_ZOOM_OUT = 0.15;   // Your strict maximum zoom-out limit
+let MAX_ZOOM_IN = 6.0;     // Maximum zoom-in limsit
 
 // --- CAMERA VIEWPORT STATE ---
 let zoom = 1.0;
