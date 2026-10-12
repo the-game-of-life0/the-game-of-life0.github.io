@@ -16,9 +16,17 @@ resizeCanvas();
 
 let ctx = canvas.getContext('2d');
 
+// Grid of squares
+let grid = [];
+
 let BASE_SQUARE_SIZE = 70; // Width/height of square at 1.0x zoom
 let MAX_ZOOM_OUT = 0.15;   // Your strict maximum zoom-out limit
-let MAX_ZOOM_IN = 6.0;     // Maximum zoom-in limsit
+let MAX_ZOOM_IN = 1.6;     // Maximum zoom-in limit
+let ZOOM_SPEED = 1.1;
+
+// Colour
+let SQUARECOLOUR = '#000000'
+let BORDER_COLOUR = '#787070'
 
 // --- CAMERA VIEWPORT STATE ---
 let zoom = 1.0;
@@ -28,18 +36,24 @@ let isDragging = false;
 let startX = 0;
 let startY = 0;
 
+// Globals
+let currentSize;
+
 // --- DYNAMIC DATA MAPPING (arr[i][j]) ---
-// Replace this with your actual array lookup or procedural map generation
-function getSquareColor(i, j) {
+function getSquareColour(i, j) {
     if (i === 0 && j === 0) return '#e74c3c'; // Visual origin marker
-    return '#000000'
+    return SQUARECOLOUR;
 }
 
-// --- CORE RENDERING ENGINE (Calculates Visible Squares) ---
-function draw() {
+function getStrokeColour(i, j) {
+    return BORDER_COLOUR;
+}
+
+function main() {
+    // DRAW SQUARES
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const currentSize = BASE_SQUARE_SIZE * zoom;
+    currentSize = BASE_SQUARE_SIZE * zoom;
 
     // 1. Convert screen bounds to 2D array world coordinates (i, j)
     const startI = Math.floor(-offsetX / currentSize);
@@ -57,15 +71,31 @@ function draw() {
             const screenY = j * currentSize + offsetY;
 
             // Render square background using custom array coordinates
-            ctx.fillStyle = getSquareColor(i, j);
+            ctx.fillStyle = getSquareColour(i, j);
+            ctx.strokeStyle = getStrokeColour(i, j);
             ctx.fillRect(screenX, screenY, currentSize - 1, currentSize - 1); // -1 for border spacing
         }
     }
 
-    requestAnimationFrame(draw);
+    // LOGIC
+
+
+
+    requestAnimationFrame(main);
 }
 
-// --- INTERACTIVE EVENT LISTENERS ---
+function getSquareCoords(x, y) {
+    /* 
+    Given a pair of coordinates on the canvas, return the coordinates for the matching
+    square in the array 'grid'
+
+    If the given coordinates are not on the grid, returns (-1, -1)
+    */
+    //currentSize
+    return 5, 5;
+}
+
+// --- EVENT LISTENERS ---
 
 // Scroll-Wheel Zoom Logic
 canvas.addEventListener('wheel', (e) => {
@@ -74,19 +104,19 @@ canvas.addEventListener('wheel', (e) => {
 
     // Zoom factor scaling
     if (e.deltaY < 0) {
-        zoom *= 1.1;
+        zoom *= ZOOM_SPEED;
     } else {
-        zoom /= 1.1;
+        zoom *= -ZOOM_SPEED;
     }
 
     // CRITICAL: Clamps the camera strictly to your max zoom-out scale
     zoom = Math.min(Math.max(MAX_ZOOM_OUT, zoom), MAX_ZOOM_IN);
 
-    // Repositions view window relative to cursor anchor point
-    const mouseX = e.clientX;
-    const mouseY = e.clientY;
-    offsetX = mouseX - (mouseX - offsetX) * (zoom / oldZoom);
-    offsetY = mouseY - (mouseY - offsetY) * (zoom / oldZoom);
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    offsetX = centerX - (centerX - offsetX) * (zoom / oldZoom);
+    offsetY = centerY - (centerY - offsetY) * (zoom / oldZoom);
 }, { passive: false });
 
 // Pan Event: Click Initiation
@@ -108,5 +138,15 @@ window.addEventListener('mouseup', () => {
     isDragging = false;
 });
 
+canvas.addEventListener('mousedown', (e) => {
+    if (isDragging) return;
+    x = e.clientX;
+    y = e.clientY;
+
+    x, y = getSquareCoords(x, y);
+
+    grid[square] = !(grid[square])
+})
+
 // Run engine instance
-requestAnimationFrame(draw);
+requestAnimationFrame(main);
